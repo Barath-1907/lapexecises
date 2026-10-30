@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Portal - AJAX JSON</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+
+        header {
+            background: #0f172a;
+            color: white;
+
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1e40af
+            );
+
+            color: white;
+
+            padding: 60px 7%;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            font-size: 17px;
+        }
+
+
+        /* CONTAINER */
+
+        .container {
+            width: 86%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+
+        /* TOP SECTION */
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+
+            width: 300px;
+
+            padding: 12px 15px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .load-btn {
+
+            padding: 12px 22px;
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .load-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* COUNTER */
+
+        .counter {
+
+            font-size: 15px;
+
+            color: #64748b;
+        }
+
+        .counter strong {
+            color: #2563eb;
+        }
+
+
+        /* STUDENT GRID */
+
+        #studentContainer {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(270px, 1fr));
+
+            gap: 22px;
+        }
+
+
+        /* STUDENT CARD */
+
+        .student-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.07);
+
+            border: 1px solid #e2e8f0;
+
+            transition: 0.3s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+        }
+
+
+        .avatar {
+
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+
+        .student-card h2 {
+
+            font-size: 21px;
+
+            margin-bottom: 18px;
+
+            color: #0f172a;
+        }
+
+
+        .student-card p {
+
+            color: #64748b;
+
+            line-height: 1.6;
+
+            margin: 9px 0;
+        }
+
+
+        .student-card strong {
+            color: #334155;
+        }
+
+
+        .department {
+
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 6px 12px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+
+            grid-column: 1 / -1;
+
+            background: white;
+
+            padding: 50px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            color: #64748b;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+
+            margin-top: 70px;
+
+            background: #0f172a;
+
+            color: #94a3b8;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 700px) {
+
+            header {
+                padding: 18px 5%;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 45px 5%;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .top-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-box {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .load-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            Student<span>Portal</span>
+        </div>
+
+        <nav>
+
+            <a href="#">Home</a>
+
+            <a href="#">Students</a>
+
+            <a href="#">About</a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>Student Information Portal</h1>
+
+        <p>
+            Retrieve student information dynamically
+            using AJAX and JSON.
+        </p>
+
+    </section>
+
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <!-- SEARCH AND LOAD -->
+
+        <section class="top-section">
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search student..."
+                    onkeyup="searchStudent()"
+                >
+
+                <button
+                    class="load-btn"
+                    onclick="loadStudents()"
+                >
+
+                    Load Students
+
+                </button>
+
+            </div>
+
+
+            <div class="counter">
+
+                Students:
+                <strong id="studentCount">0</strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- STUDENTS -->
+
+        <section id="studentContainer">
+
+            <div class="message">
+
+                Click <b>Load Students</b>
+                to retrieve student data.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            Internet and Web Technology Lab
+        </p>
+
+    </footer>
+
+
+
+    <!-- JAVASCRIPT AJAX -->
+
+    <script>
+
+
+        /* Store student data */
+
+        var students = [];
+
+
+
+        /* LOAD STUDENTS */
+
+        function loadStudents() {
+
+
+            /* Create AJAX request */
+
+            var xhr =
+                new XMLHttpRequest();
+
+
+
+            /* Open request */
+
+            xhr.open(
+                "GET",
+                "students.json",
+                true
+            );
+
+
+
+            /* Response received */
+
+            xhr.onload = function() {
+
+
+                if (xhr.status == 200) {
+
+
+                    /* Convert JSON */
+
+                    students =
+                        JSON.parse(
+                            xhr.responseText
+                        );
+
+
+                    /* Display */
+
+                    displayStudents(
+                        students
+                    );
+
+
+                }
+                else {
+
+
+                    showMessage(
+                        "Unable to load student data."
+                    );
+
+                }
+
+            };
+
+
+
+            /* Request error */
+
+            xhr.onerror = function() {
+
+                showMessage(
+                    "AJAX request failed."
+                );
+
+            };
+
+
+
+            /* Send request */
+
+            xhr.send();
+
+        }
+
+
+
+        /* DISPLAY STUDENTS */
+
+        function displayStudents(data) {
+
+
+            var container =
+                document.getElementById(
+                    "studentContainer"
+                );
+
+
+            /* Clear */
+
+            container.innerHTML = "";
+
+
+            /* Update count */
+
+            document.getElementById(
+                "studentCount"
+            ).innerText = data.length;
+
+
+
+            /* No result */
+
+            if (data.length == 0) {
+
+                showMessage(
+                    "No student found."
+                );
+
+                return;
+
+            }
+
+
+
+            /* Loop */
+
+            data.forEach(
+                function(student) {
+
+
+                    /* Create card */
+
+                    var card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "student-card";
+
+
+
+                    /* First letter */
+
+                    var firstLetter =
+                        student.name
+                        .charAt(0)
+                        .toUpperCase();
+
+
+
+                    /* Card content */
+
+                    card.innerHTML =
+
+                        "<div class='avatar'>" +
+
+                            firstLetter +
+
+                        "</div>" +
+
+
+                        "<h2>" +
+
+                            student.name +
+
+                        "</h2>" +
+
+
+                        "<p>" +
+
+                            "<strong>Email:</strong><br>" +
+
+                            student.email +
+
+                        "</p>" +
+
+
+                        "<p>" +
+
+                            "<strong>Phone:</strong><br>" +
+
+                            student.phone +
+
+                        "</p>" +
+
+
+                        "<p>" +
+
+                            "<strong>College:</strong><br>" +
+
+                            student.college +
+
+                        "</p>" +
+
+
+                        "<span class='department'>" +
+
+                            student.department +
+
+                        "</span>";
+
+
+
+                    /* Add card */
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* SEARCH */
+
+        function searchStudent() {
+
+
+            var searchValue =
+
+                document.getElementById(
+                    "search"
+                )
+                .value
+                .toLowerCase()
+                .trim();
+
+
+
+            /* Empty search */
+
+            if (searchValue == "") {
+
+                displayStudents(
+                    students
+                );
+
+                return;
+
+            }
+
+
+
+            /* Filter */
+
+            var filteredStudents =
+
+                students.filter(
+                    function(student) {
+
+
+                        return student.name
+                            .toLowerCase()
+                            .includes(
+                                searchValue
+                            );
+
+                    }
+                );
+
+
+
+            /* Display result */
+
+            displayStudents(
+                filteredStudents
+            );
+
+        }
+
+
+
+        /* MESSAGE */
+
+        function showMessage(message) {
+
+
+            document.getElementById(
+                "studentContainer"
+            ).innerHTML =
+
+                "<div class='message'>" +
+
+                message +
+
+                "</div>";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

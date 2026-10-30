@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Calculator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg,#141e30,#243b55);
+}
+
+.calculator{
+    width:360px;
+    background:#1f2937;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+#display{
+    width:100%;
+    height:60px;
+    font-size:26px;
+    padding:10px;
+    text-align:right;
+    border:none;
+    border-radius:10px;
+    margin-bottom:15px;
+    background:#fff;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+button{
+    height:55px;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+    background:#374151;
+    color:#fff;
+    transition:.2s;
+}
+
+button:hover{
+    background:#4b5563;
+}
+
+.equal{
+    background:#ff9800;
+}
+
+.equal:hover{
+    background:#e68900;
+}
+
+.clear{
+    background:#ef4444;
+}
+
+.clear:hover{
+    background:#dc2626;
+}
+</style>
+
+</head>
+<body>
+
+<div class="calculator">
+
+<input type="text" id="display" readonly>
+
+<div class="buttons">
+
+<button class="clear" onclick="clearDisplay()">C</button>
+<button onclick="deleteLast()">⌫</button>
+<button onclick="appendValue('(')">(</button>
+<button onclick="appendValue(')')">)</button>
+
+<button onclick="appendFunction('Math.sin(')">sin</button>
+<button onclick="appendFunction('Math.cos(')">cos</button>
+<button onclick="appendFunction('Math.tan(')">tan</button>
+<button onclick="appendFunction('Math.sqrt(')">√</button>
+
+<button onclick="appendFunction('Math.log10(')">log</button>
+<button onclick="appendFunction('Math.log(')">ln</button>
+<button onclick="appendValue('Math.PI')">π</button>
+<button onclick="appendValue('Math.E')">e</button>
+
+<button onclick="appendValue('7')">7</button>
+<button onclick="appendValue('8')">8</button>
+<button onclick="appendValue('9')">9</button>
+<button onclick="appendValue('/')">÷</button>
+
+<button onclick="appendValue('4')">4</button>
+<button onclick="appendValue('5')">5</button>
+<button onclick="appendValue('6')">6</button>
+<button onclick="appendValue('*')">×</button>
+
+<button onclick="appendValue('1')">1</button>
+<button onclick="appendValue('2')">2</button>
+<button onclick="appendValue('3')">3</button>
+<button onclick="appendValue('-')">−</button>
+
+<button onclick="appendValue('0')">0</button>
+<button onclick="appendValue('.')">.</button>
+<button onclick="square()">x²</button>
+<button onclick="appendValue('+')">+</button>
+
+<button onclick="appendValue('%')">%</button>
+<button onclick="appendValue('**')">xʸ</button>
+<button onclick="appendValue(',')">,</button>
+<button class="equal" onclick="calculate()">=</button>
+
+</div>
+
+</div>
+
+<script>
+
+const display=document.getElementById("display");
+
+function appendValue(value){
+    display.value+=value;
+}
+
+function appendFunction(func){
+    display.value+=func;
+}
+
+function clearDisplay(){
+    display.value="";
+}
+
+function deleteLast(){
+    display.value=display.value.slice(0,-1);
+}
+
+function square(){
+    try{
+        display.value=eval(display.value)**2;
+    }catch{
+        display.value="Error";
+    }
+}
+
+function calculate(){
+    try{
+        let result=eval(display.value);
+        display.value=result;
+    }catch{
+        display.value="Error";
+    }
+}
+
+</script>
+
+</body>
+</html>

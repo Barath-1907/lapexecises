@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIELDSTONE — Menswear</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root{
+    --stone:#efece5;
+    --stone-dim:#e1ddd2;
+    --ink:#1e2321;
+    --forest:#3c4a3a;
+    --clay:#a3563d;
+    --line: rgba(30,35,33,0.14);
+    --radius: 2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--stone); color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width:1140px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:var(--stone);
+    border-bottom:1px solid var(--line);
+  }
+  .header-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 28px;
+  }
+  .logo{
+    font-family:'Zilla Slab', serif; font-weight:600;
+    font-size:22px; letter-spacing:0.5px;
+  }
+  .nav-links{
+    display:flex; gap:30px; list-style:none;
+    font-size:13px; letter-spacing:0.3px;
+  }
+  .nav-links li a{ opacity:0.7; transition:opacity .2s; }
+  .nav-links li a:hover{ opacity:1; }
+
+  .cart-btn{
+    position:relative;
+    background:none; border:1px solid var(--ink);
+    font-family:'Inter', sans-serif; font-weight:500; font-size:13px;
+    padding:9px 16px; border-radius:var(--radius);
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+    transition:background .15s, color .15s;
+  }
+  .cart-btn:hover{ background:var(--ink); color:var(--stone); }
+  .cart-count{
+    background:var(--clay); color:var(--stone);
+    border-radius:50%; width:17px; height:17px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 28px 56px; text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-eyebrow{
+    font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--forest); display:block; margin-bottom:14px; font-weight:600;
+  }
+  .hero h1{
+    font-family:'Zilla Slab', serif; font-weight:600;
+    font-size:clamp(32px, 5vw, 48px); line-height:1.05;
+    max-width:640px; margin:0 auto 14px;
+  }
+  .hero p{
+    font-size:15px; opacity:0.65; max-width:420px; margin:0 auto;
+  }
+
+  /* ---------- SHOP ---------- */
+  .shop{ padding:56px 28px 80px; }
+  .shop-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:30px; flex-wrap:wrap; gap:10px;
+  }
+  .shop-head h2{ font-family:'Zilla Slab', serif; font-weight:600; font-size:24px; }
+  .shop-head span{ font-size:12px; opacity:0.5; letter-spacing:0.3px; }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:24px;
+  }
+
+  .card{
+    background:var(--stone); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:box-shadow .2s, transform .2s;
+  }
+  .card:hover{ transform:translateY(-3px); box-shadow:0 12px 24px rgba(30,35,33,0.1); }
+
+  .swatch{ aspect-ratio:4/5; position:relative; overflow:hidden; }
+  .swatch .tag{
+    position:absolute; top:10px; left:10px;
+    font-size:10px; letter-spacing:0.8px; text-transform:uppercase;
+    background:rgba(30,35,33,0.8); color:var(--stone);
+    padding:4px 8px; border-radius:2px;
+  }
+  .swatch .weave{
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 6px);
+  }
+
+  .card-body{ padding:15px 16px 18px; display:flex; flex-direction:column; gap:4px; flex:1; }
+  .card-body h3{ font-family:'Zilla Slab', serif; font-weight:600; font-size:16px; }
+  .card-body .meta{ font-size:12px; opacity:0.55; }
+  .card-footer{
+    margin-top:auto; display:flex; align-items:center; justify-content:space-between;
+    padding-top:12px;
+  }
+  .price{ font-family:'JetBrains Mono', monospace; font-weight:600; font-size:14px; }
+  .add-btn{
+    background:var(--ink); color:var(--stone); border:none;
+    font-family:'Inter', sans-serif; font-weight:500; font-size:12px;
+    padding:9px 14px; border-radius:var(--radius); cursor:pointer;
+    transition:background .2s;
+  }
+  .add-btn:hover{ background:var(--forest); }
+  .add-btn:focus-visible, .cart-btn:focus-visible{
+    outline:2px solid var(--clay); outline-offset:2px;
+  }
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(30,35,33,0.45);
+    opacity:0; pointer-events:none; transition:opacity .25s; z-index:50;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:min(390px, 92vw);
+    background:var(--stone); z-index:60;
+    transform:translateX(100%); transition:transform .3s ease;
+    display:flex; flex-direction:column;
+    border-left:1px solid var(--line);
+  }
+  .drawer.open{ transform:translateX(0); }
+
+  .drawer-head{
+    padding:22px 24px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .drawer-head h3{ font-family:'Zilla Slab', serif; font-weight:600; font-size:18px; }
+  .close-btn{
+    background:none; border:none; font-size:22px; cursor:pointer; line-height:1; color:var(--ink);
+  }
+
+  .drawer-items{ flex:1; overflow-y:auto; padding:10px 24px; }
+  .empty-msg{ opacity:0.5; font-size:13px; padding:30px 0; text-align:center; }
+
+  .line-item{ display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); }
+  .li-swatch{ width:50px; height:60px; border-radius:2px; position:relative; flex-shrink:0; overflow:hidden; }
+  .li-info{ flex:1; }
+  .li-info h4{ font-family:'Zilla Slab', serif; font-weight:600; font-size:14px; margin-bottom:2px; }
+  .li-info .meta{ font-size:11px; opacity:0.55; }
+  .li-controls{ display:flex; align-items:center; gap:8px; margin-top:8px; }
+  .qty-btn{
+    width:22px; height:22px; border:1px solid var(--line); background:none;
+    border-radius:2px; cursor:pointer; font-family:'Inter', sans-serif;
+  }
+  .qty-val{ font-size:13px; min-width:16px; text-align:center; }
+  .li-remove{
+    margin-left:auto; background:none; border:none; text-decoration:underline;
+    font-size:11px; opacity:0.5; cursor:pointer;
+  }
+  .li-price{ font-family:'JetBrains Mono', monospace; font-size:13px; white-space:nowrap; }
+
+  .drawer-footer{ padding:20px 24px 26px; border-top:1px solid var(--line); }
+  .subtotal-row{
+    display:flex; justify-content:space-between; font-size:14px; margin-bottom:16px;
+  }
+  .subtotal-row span:last-child{ font-family:'JetBrains Mono', monospace; font-weight:600; }
+  .checkout-btn{
+    width:100%; background:var(--ink); color:var(--stone); border:none;
+    padding:14px; border-radius:var(--radius); font-weight:500; font-size:13px;
+    letter-spacing:0.3px; cursor:pointer; transition:background .2s;
+  }
+  .checkout-btn:hover:not(:disabled){ background:var(--forest); }
+  .checkout-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+
+  /* ---------- CHECKOUT MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(30,35,33,0.55);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .25s; z-index:80; padding:20px;
+  }
+  .modal-overlay.open{ opacity:1; pointer-events:auto; }
+  .modal{
+    background:var(--stone); width:100%; max-width:370px;
+    border-radius:var(--radius); padding:28px 26px; position:relative;
+    border:1px solid var(--line);
+  }
+  .modal h3{ font-family:'Zilla Slab', serif; font-weight:600; font-size:20px; margin-bottom:6px; }
+  .modal p.sub{ font-size:13px; opacity:0.6; margin-bottom:18px; }
+  .modal label{
+    display:block; font-size:11px; letter-spacing:0.5px; text-transform:uppercase;
+    margin-bottom:6px; margin-top:14px; opacity:0.75;
+  }
+  .modal input{
+    width:100%; padding:10px 12px; border:1px solid var(--line);
+    border-radius:2px; font-family:'Inter', sans-serif; font-size:14px;
+    background:#fff;
+  }
+  .modal input:focus-visible{ outline:2px solid var(--clay); }
+  .modal-actions{ display:flex; gap:10px; margin-top:22px; }
+  .modal-actions button{
+    flex:1; padding:12px; border-radius:var(--radius); border:none;
+    font-size:12px; font-weight:500; letter-spacing:0.3px; cursor:pointer;
+  }
+  .btn-cancel{ background:var(--stone-dim); color:var(--ink); }
+  .btn-confirm{ background:var(--forest); color:var(--stone); }
+  .modal-close{
+    position:absolute; top:14px; right:16px; background:none; border:none;
+    font-size:20px; cursor:pointer;
+  }
+  .confirm-view{ text-align:center; padding:8px 0; }
+  .confirm-view .stamp{
+    font-family:'Zilla Slab', serif; font-weight:600; font-size:22px; color:var(--forest); margin-bottom:8px;
+  }
+  .confirm-view p{ font-size:13px; opacity:0.65; }
+
+  footer{
+    text-align:center; padding:26px; font-size:11px; opacity:0.45;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:640px){
+    .nav-links{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">FIELDSTONE</div>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#" onclick="return false">Lookbook</a></li>
+      <li><a href="#" onclick="return false">Care</a></li>
+    </ul>
+    <button class="cart-btn" onclick="openDrawer()" aria-label="Open cart">
+      Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="hero-eyebrow">Autumn Staples</span>
+  <h1>Clothes built to be worn, not just owned.</h1>
+  <p>A short, considered range — heavier cottons, honest wool, nothing that needs replacing next season.</p>
+</section>
+
+<section class="shop" id="shop">
+  <div class="wrap">
+    <div class="shop-head">
+      <h2>The Range</h2>
+      <span id="itemCountLabel">8 pieces</span>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<footer>FIELDSTONE — a demo menswear shop. No real orders are placed.</footer>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<aside class="drawer" id="drawer" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h3>Your Bag</h3>
+    <button class="close-btn" onclick="closeDrawer()" aria-label="Close cart">&times;</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-footer">
+    <div class="subtotal-row">
+      <span>Subtotal</span>
+      <span id="subtotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
+  </div>
+</aside>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+  const PRODUCTS = [
+    { id:1, title:"Waxed Field Jacket", cat:"Outerwear", price:168, hue:145, sat:18, light:22 },
+    { id:2, title:"Brushed Oxford Shirt", cat:"Shirting", price:74, hue:25, sat:22, light:55 },
+    { id:3, title:"Heavyweight Chino", cat:"Trousers", price:88, hue:40, sat:20, light:48 },
+    { id:4, title:"Merino Crewneck", cat:"Knitwear", price:96, hue:200, sat:15, light:35 },
+    { id:5, title:"Selvedge Denim", cat:"Denim", price:142, hue:215, sat:35, light:28 },
+    { id:6, title:"Flannel Overshirt", cat:"Shirting", price:82, hue:8, sat:25, light:38 },
+    { id:7, title:"Wool Trench Coat", cat:"Outerwear", price:245, hue:35, sat:12, light:42 },
+    { id:8, title:"Ribbed Beanie", cat:"Accessories", price:32, hue:120, sat:14, light:25 }
+  ];
+
+  let cart = []; // { id, qty }
+
+  function swatchStyle(p){
+    return `background: linear-gradient(160deg, hsl(${p.hue},${p.sat}%,${p.light+14}%), hsl(${p.hue},${p.sat}%,${p.light}%));`;
+  }
+
+  function renderProducts(){
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = PRODUCTS.map(p => `
+      <div class="card">
+        <div class="swatch" style="${swatchStyle(p)}">
+          <div class="weave"></div>
+          <span class="tag">${p.cat}</span>
+        </div>
+        <div class="card-body">
+          <h3>${p.title}</h3>
+          <div class="meta">${p.cat}</div>
+          <div class="card-footer">
+            <span class="price">$${p.price.toFixed(2)}</span>
+            <button class="add-btn" onclick="addToCart(${p.id})">Add</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addToCart(id){
+    const existing = cart.find(i => i.id === id);
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({ id, qty:1 }); }
+    renderCart();
+    openDrawer();
+  }
+
+  function changeQty(id, delta){
+    const item = cart.find(i => i.id === id);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0){ cart = cart.filter(i => i.id !== id); }
+    renderCart();
+  }
+
+  function removeItem(id){
+    cart = cart.filter(i => i.id !== id);
+    renderCart();
+  }
+
+  function renderCart(){
+    const container = document.getElementById('drawerItems');
+    const totalQty = cart.reduce((s,i) => s + i.qty, 0);
+    document.getElementById('cartCount').textContent = totalQty;
+    document.getElementById('checkoutBtn').disabled = cart.length === 0;
+
+    if(cart.length === 0){
+      container.innerHTML = `<div class="empty-msg">Your bag is empty.<br>Add something from the range.</div>`;
+    } else {
+      container.innerHTML = cart.map(item => {
+        const p = PRODUCTS.find(pr => pr.id === item.id);
+        return `
+          <div class="line-item">
+            <div class="li-swatch" style="${swatchStyle(p)}"></div>
+            <div class="li-info">
+              <h4>${p.title}</h4>
+              <div class="meta">${p.cat}</div>
+              <div class="li-controls">
+                <button class="qty-btn" onclick="changeQty(${p.id}, -1)" aria-label="Decrease quantity">–</button>
+                <span class="qty-val">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${p.id}, 1)" aria-label="Increase quantity">+</button>
+                <button class="li-remove" onclick="removeItem(${p.id})">Remove</button>
+              </div>
+            </div>
+            <div class="li-price">$${(p.price * item.qty).toFixed(2)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    const subtotal = cart.reduce((s,i) => {
+      const p = PRODUCTS.find(pr => pr.id === i.id);
+      return s + p.price * i.qty;
+    }, 0);
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+  }
+
+  function openDrawer(){
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+  function closeDrawer(){
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  function openCheckout(){
+    if(cart.length === 0) return;
+    const subtotal = cart.reduce((s,i) => {
+      const p = PRODUCTS.find(pr => pr.id === i.id);
+      return s + p.price * i.qty;
+    }, 0);
+    document.getElementById('modalBody').innerHTML = `
+      <button class="modal-close" onclick="closeCheckout()" aria-label="Close">&times;</button>
+      <h3>Checkout</h3>
+      <p class="sub">Subtotal: $${subtotal.toFixed(2)} · Demo only, nothing is charged.</p>
+      <label for="ckName">Name</label>
+      <input id="ckName" type="text" placeholder="Full name">
+      <label for="ckEmail">Email</label>
+      <input id="ckEmail" type="email" placeholder="you@example.com">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeCheckout()">Cancel</button>
+        <button class="btn-confirm" onclick="confirmOrder()">Place Order</button>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function confirmOrder(){
+    document.getElementById('modalBody').innerHTML = `
+      <button class="modal-close" onclick="closeCheckout()" aria-label="Close">&times;</button>
+      <div class="confirm-view">
+        <div class="stamp">Order placed</div>
+        <p>Your order is on its way (hypothetically). Thanks for shopping FIELDSTONE.</p>
+        <div class="modal-actions" style="margin-top:20px;">
+          <button class="btn-confirm" style="flex:1;" onclick="finishOrder()">Done</button>
+        </div>
+      </div>
+    `;
+    cart = [];
+    renderCart();
+  }
+
+  function finishOrder(){
+    closeCheckout();
+    closeDrawer();
+  }
+
+  function closeCheckout(){
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ closeCheckout(); closeDrawer(); }
+  });
+
+  renderProducts();
+  renderCart();
+</script>
+
+</body>
+</html>

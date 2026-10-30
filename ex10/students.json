@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Barath",
+        "email": "barath@gmail.com",
+        "phone": "9876543210",
+        "department": "MCA",
+        "college": "Pondicherry University"
+    },
+    {
+        "name": "Priya",
+        "email": "priya@gmail.com",
+        "phone": "9876543212",
+        "department": "Computer Science",
+        "college": "Pondicherry University"
+    },
+    {
+        "name": "Arun",
+        "email": "arun@gmail.com",
+        "phone": "9876543213",
+        "department": "Information Technology",
+        "college": "Pondicherry University"
+    },
+    {
+        "name": "Karthik",
+        "email": "karthik@gmail.com",
+        "phone": "9876543214",
+        "department": "Computer Applications",
+        "college": "Pondicherry University"
+    },
+    {
+        "name": "Rahul",
+        "email": "rahul@gmail.com",
+        "phone": "9876543215",
+        "department": "MCA",
+        "college": "Pondicherry University"
+    }
+]
